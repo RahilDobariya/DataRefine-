@@ -7,7 +7,7 @@ from utils.type_inference import infer_all_column_types, is_problematic
 from utils.data_cleaner   import apply_cleaning_rules, build_default_rules
 from utils.ai_client      import analyze_structure
 
-# ── Page config ───────────────────────────────────────────────────────────────
+#  Page config 
 st.set_page_config(
     page_title="DataRefine",
     page_icon="🔬",
@@ -15,7 +15,7 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-# ── Custom CSS ────────────────────────────────────────────────────────────────
+# Custom CSS 
 st.markdown("""
 <style>
   @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap');
@@ -90,7 +90,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 
-# ── Session state init ────────────────────────────────────────────────────────
+# Session state init 
 _DEFAULTS = {
     "raw_df":          None,
     "file_info":       None,
@@ -104,7 +104,7 @@ for _k, _v in _DEFAULTS.items():
         st.session_state[_k] = _v
 
 
-# ── Helpers ───────────────────────────────────────────────────────────────────
+#  Helpers 
 
 def highlight_issues(val) -> str:
     """Pandas Styler function — amber background for problematic cells."""
@@ -147,7 +147,7 @@ def reset_state():
             del st.session_state[key]
 
 
-# ── Sidebar ───────────────────────────────────────────────────────────────────
+# Sidebar 
 with st.sidebar:
     st.markdown("## 🔬 DataRefine")
     st.markdown("*Intelligent data cleaning for messy files*")
@@ -187,7 +187,7 @@ with st.sidebar:
     )
 
 
-# ── Header ────────────────────────────────────────────────────────────────────
+#  Header
 st.markdown("# DataRefine")
 st.markdown(
     "Upload any messy Excel or CSV — AI analyzes structure, flags issues, "
@@ -196,9 +196,9 @@ st.markdown(
 st.divider()
 
 
-# ══════════════════════════════════════════════════════════════════════════════
+
 #  SECTION 01 — UPLOAD
-# ══════════════════════════════════════════════════════════════════════════════
+
 st.markdown('<div class="section-label">01 — Upload</div>', unsafe_allow_html=True)
 
 uploaded = st.file_uploader(
@@ -224,9 +224,9 @@ if st.session_state.raw_df is None:
     st.stop()
 
 
-# ══════════════════════════════════════════════════════════════════════════════
-#  SECTION 02 — RAW DATA PREVIEW
-# ══════════════════════════════════════════════════════════════════════════════
+
+#  SECTION 02 — RAW DATA PREVIEW 
+
 st.divider()
 st.markdown('<div class="section-label">02 — Raw Data Preview</div>', unsafe_allow_html=True)
 
@@ -267,9 +267,9 @@ st.caption(
 st.markdown(badge_html, unsafe_allow_html=True)
 
 
-# ══════════════════════════════════════════════════════════════════════════════
+
 #  SECTION 03 — AI ANALYSIS
-# ══════════════════════════════════════════════════════════════════════════════
+
 st.divider()
 st.markdown('<div class="section-label">03 — AI Analysis</div>', unsafe_allow_html=True)
 
@@ -318,7 +318,7 @@ if analyze_clicked and api_key:
             st.error(f"AI analysis failed: {e}")
     st.rerun()
 
-# ── Show analysis results ─────────────────────────────────────────────────────
+#  Show analysis results 
 if st.session_state.analysis_result:
     result = st.session_state.analysis_result
 
@@ -351,7 +351,7 @@ if st.session_state.analysis_result:
 
 st.markdown("")
 
-# ── Transformation rules checklist ───────────────────────────────────────────
+#  Transformation rules checklist 
 rules = st.session_state.rules
 
 if rules:
@@ -383,7 +383,7 @@ if rules:
 else:
     st.caption("No rules available yet. Upload a file first.")
 
-# ── Apply button ──────────────────────────────────────────────────────────────
+#  Apply button
 st.markdown("")
 apply_col, skip_col = st.columns([2, 8])
 
@@ -419,9 +419,7 @@ if apply_clicked and rules:
     st.rerun()
 
 
-# ══════════════════════════════════════════════════════════════════════════════
 #  SECTION 04 — TRANSFORMATION LOG
-# ══════════════════════════════════════════════════════════════════════════════
 if st.session_state.transform_log:
     st.divider()
     st.markdown('<div class="section-label">04 — Transformation Log</div>', unsafe_allow_html=True)
@@ -453,9 +451,7 @@ if st.session_state.transform_log:
         st.success(f"✓ {total_changed:,} cells cleaned across {unique_cols} columns")
 
 
-# ══════════════════════════════════════════════════════════════════════════════
 #  SECTION 05 — CLEAN DATA PREVIEW
-# ══════════════════════════════════════════════════════════════════════════════
 if st.session_state.cleaned_result:
     st.divider()
     st.markdown('<div class="section-label">05 — Clean Data Preview</div>', unsafe_allow_html=True)
@@ -499,9 +495,8 @@ if st.session_state.cleaned_result:
     st.markdown(type_html, unsafe_allow_html=True)
 
 
-# ══════════════════════════════════════════════════════════════════════════════
+
 #  SECTION 06 — EXPORT
-# ══════════════════════════════════════════════════════════════════════════════
 if st.session_state.cleaned_result:
     st.divider()
     st.markdown('<div class="section-label">06 — Export</div>', unsafe_allow_html=True)

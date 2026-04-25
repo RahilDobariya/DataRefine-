@@ -126,6 +126,6 @@ The `examples/` folder contains a ready-to-use test pair:
 
 ---
 
-## License
+## Author
 
-MIT — Rahil Dobariya
+Rahil Dobariya
